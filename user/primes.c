@@ -12,6 +12,7 @@ void f(int *pl)
     int pr[2];
     pipe(pr);
     int pid = fork();
+    // 只有父进程能做的事，假如把pid>0的也放上面，子进程也会运行
     if (pid > 0)
     {
         close(pr[0]);
