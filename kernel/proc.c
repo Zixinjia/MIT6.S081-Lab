@@ -17,7 +17,7 @@ struct spinlock pid_lock;
 
 extern void forkret(void);
 static void freeproc(struct proc *p);
-
+extern int getprocessNum(void);
 extern char trampoline[]; // trampoline.S
 
 // helps ensure that wakeups of wait()ing
@@ -678,4 +678,24 @@ void procdump(void)
     printf("%d %s %s", p->pid, state, p->name);
     printf("\n");
   }
+}
+// 获取进程数
+int getprocessNum(void)
+{
+  int num = 0;
+  struct proc *p;
+  for (p = proc; p < &proc[NPROC]; p++)
+  {
+    acquire(&p->lock);
+    if (p->state == UNUSED)
+    {
+      // 什么都不用干
+    }
+    else
+    {
+      num++;
+      release(&p->lock);
+    }
+  }
+  return num;
 }

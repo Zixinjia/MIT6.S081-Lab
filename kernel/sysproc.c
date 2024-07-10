@@ -6,7 +6,13 @@
 #include "memlayout.h"
 #include "spinlock.h"
 #include "proc.h"
+#include "sysinfo.h"
+#include "file.h"
+#include "stat.h"
+// #include "proc.c"
+#include "sleeplock.h"
 
+#include "kalloc.c"
 uint64
 sys_exit(void)
 {
@@ -105,5 +111,19 @@ sys_trace(void)
     return -1;
   myproc()->mask = n;
   // printf("mask ==  %d\n", myproc()->mask);
+  return 0;
+}
+uint64
+sys_sysinfo(void)
+{
+  struct sysinfo *info;
+  info->freemem = getFreeMem();
+  info->nproc = getprocessNum();
+  uint64 st; // user pointer to struct stat
+  if (argaddr(1, &st) < 0)
+    return -1;
+  struct proc *p = myproc();
+  if (copyout(p->pagetable, st, (char *)info, sizeof(info)) < 0)
+    return -1;
   return 0;
 }

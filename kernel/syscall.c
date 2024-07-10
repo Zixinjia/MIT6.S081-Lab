@@ -101,7 +101,7 @@ extern uint64 sys_wait(void);
 extern uint64 sys_write(void);
 extern uint64 sys_uptime(void);
 extern uint64 sys_trace(void);
-
+extern uint64 sys_sysinfo(void);
 static uint64 (*syscalls[])(void) = {
     [SYS_fork] sys_fork,
     [SYS_exit] sys_exit,
@@ -124,12 +124,13 @@ static uint64 (*syscalls[])(void) = {
     [SYS_link] sys_link,
     [SYS_mkdir] sys_mkdir,
     [SYS_close] sys_close,
-    [SYS_trace] sys_trace};
+    [SYS_trace] sys_trace,
+    [SYS_sysinfo] sys_sysinfo};
 // ↓用二维输出结果就错，用指针就好了，不清楚为什么
 static char *index[40] = {"", "fork", "exit", "wait", "pipe",
                           "read", "kill", "exec", "fstat", "chdir", "dup", "getpid", "sbrk",
                           "sleep", "uptime", "open", "write", "mknod", "unlink", "link", "mkdir",
-                          "close", "trace"};
+                          "close", "trace", "sysinfo"};
 void syscall(void)
 {
   int num;
